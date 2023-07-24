@@ -1,9 +1,15 @@
+# Version 1.0.0
+ 
 import random
 
 class Client():
-    def __init__(self, id: int, name: str, income: float, password: str):
+    def __init__(self, id: int, name: str, birth_date: str,
+                 cpf: int, address: str, income: float, password: str):
         self.id = id
         self.name = name
+        self.birth_date = birth_date
+        self.cpf = cpf
+        self.address = address
         self.income = income
         self.password = password
     
@@ -13,13 +19,14 @@ def account(client: Client):
     while True:
         print('Choose one operation: ')
         print(f'''
+     Conta de {client.name}                                 
      _________________________________________________________
-    |Account of {client.name} | Income: {client.income}       |
-    |_________________________________________________________|
     | Operations:                                             |
-    | Press "1" for transfer                                  |
-    | Press "2" for deposit                                   |
-    | Press "0" for exit to main view                         |
+    | Pressione "1" para transferir                           |
+    | Pressione "2" para depositar                            |
+    | Pressione "3" para sacar                                |
+    | Pressione "4" para verificar o saldo                    |
+    | Pressione "0" para voltar para a tela principal         |
     |                                                         |
     |                                                         |
     + ------------------------------------------------------- +
@@ -31,11 +38,14 @@ def account(client: Client):
             case '1':
                 print(f'Your income is {client.income}')
             case '2':
-                value = input('Enter the value to deposit: ')
-                client.income = client.income + float(value)
+                value = float(input('Enter the value to deposit: '))
+                client.income += value
                 print(f'Your actual income is {client.income}')
             case '3':
-                pass
+                value = float(input('Insira o valor que deseja sacar: '))
+                client.income -= value
+            case '4':
+                print(f'Seu saldo atual é {client.income}')
             case '0':
                 print('Exiting for main view...')
                 break
@@ -45,18 +55,19 @@ def account(client: Client):
     
 
 def main():
-    tester1 = Client(432, 'tester', 2000.0, 'test')
-    tester2 =  Client(332, 'tester2', 1000.0, 'test2')
+    tester1 = Client(432, 'tester', '13/04/1976', 332415144, 'Praça alves, 13 - Margarida - São Paulo/SP', 1000.0, 'test')
+    tester2 =  Client(332, 'tester2', '20/07/1988', 666673352, 'Praça pedrão, 2 - Pedras Novas - Rio de Janeiro/RJ', 2000.0, 'test2')
     clients = [tester1, tester2]
     
     while True:
-        print('''
-    Choose one of this options:
-    [1] Login
-    [2] Create Account
-    [0] Exit for application
-        ''')  
-        option = input('-> ')
+        menu_principal = '''
+Choose one of this options:
+[1] Login
+[2] Create Account
+[0] Exit for application
+    
+Insira um comando válido: '''  
+        option = input(menu_principal)
 
         match option:
             case '1':
@@ -75,17 +86,27 @@ def main():
 
             case '2':
                 name = input('Insert your complete name: ')
-                password = input('Insert a password for your account: ')
+                birth_date = input('Insira a sua data de nascimento: ')
+                cpf = input('Insira o seu CPF: ')
+                logradouro = input('Insira o seu logradouro: ')
+                numero_casa = input('Insira o número da sua casa: ')
+                bairro = input('Insira o nome do seu bairro: ')
+                cidade = input('Insira  o nome da sua cidade: ')
+                estado = input('Insira o nome do seu estado: ')
+                password = input('Insira uma senha para a sua conta: ')
+
+                address = f'{logradouro}, {numero_casa} - {bairro} - {cidade}/{estado}'
                 id = random.randint(0, 1000)
 
-                new_client = Client(id, name, 0.0, password)
+                new_client = Client(id, name, birth_date, cpf, address, 0.0, password)
                 clients.append(new_client)
-                print(f'New client created! id: {id}')
+
+                print(f'Novo cliente salvo! O seu id é {id}')
             case '0':
-                print('Closing....')
+                print('Encerrando sessão....')
                 break
             case _:
-                print('Invalid input... ')
+                print('Comando errado, por favor revise ou contate um admnistrador... ')
                 pass
 
 
