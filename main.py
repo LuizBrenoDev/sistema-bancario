@@ -40,11 +40,12 @@ def account(client: Client):
             case '2':
                 value = float(input('Enter the value to deposit: '))
                 client.income += value
-                print(f'Your actual income is {client.income}')
+                print(f'Seu saldo atual é {client.income}')
             case '3':
                 value = float(input('Insira o valor que deseja sacar: '))
                 client.income -= value
             case '4':
+                print('SALDO'.center(30, '-'))
                 print(f'Seu saldo atual é {client.income}')
             case '0':
                 print('Exiting for main view...')
@@ -85,17 +86,17 @@ Insira um comando válido: '''
 
 
             case '2':
-                name = input('Insert your complete name: ')
+                name = input('Insira o seu nome completo: ')
                 birth_date = input('Insira a sua data de nascimento: ')
                 cpf = input('Insira o seu CPF: ')
                 logradouro = input('Insira o seu logradouro: ')
-                numero_casa = input('Insira o número da sua casa: ')
+                house_number = input('Insira o número da sua casa: ')
                 bairro = input('Insira o nome do seu bairro: ')
-                cidade = input('Insira  o nome da sua cidade: ')
-                estado = input('Insira o nome do seu estado: ')
+                city = input('Insira  o nome da sua cidade: ')
+                state = input('Insira o nome do seu estado: ')
                 password = input('Insira uma senha para a sua conta: ')
 
-                address = f'{logradouro}, {numero_casa} - {bairro} - {cidade}/{estado}'
+                address = f'{logradouro}, {house_number} - {bairro} - {city}/{state}'
                 id = random.randint(0, 1000)
 
                 new_client = Client(id, name, birth_date, cpf, address, 0.0, password)
@@ -106,7 +107,7 @@ Insira um comando válido: '''
                 print('Encerrando sessão....')
                 break
             case _:
-                print('Comando errado, por favor revise ou contate um admnistrador... ')
+                print('Comando errado, por favor revise ou contate um administrador... ')
                 pass
 
 
