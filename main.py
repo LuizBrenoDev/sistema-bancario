@@ -1,4 +1,5 @@
-# Version 1.0.0
+# Version 1.1.0
+# TODO: Implementar a tranferência
  
 import random
 
@@ -12,7 +13,11 @@ class Client():
         self.address = address
         self.income = income
         self.password = password
-    
+
+
+tester1 = Client(432, 'tester', '13/04/1976', 332415144, 'Praça alves, 13 - Margarida - São Paulo/SP', 1000.0, 'test')
+tester2 =  Client(332, 'tester2', '20/07/1988', 666673352, 'Praça pedrão, 2 - Pedras Novas - Rio de Janeiro/RJ', 2000.0, 'test2')
+clients = [tester1, tester2]
 
 def account(client: Client):
     print(f'Welcome for your account sir {client.name}')
@@ -36,7 +41,16 @@ def account(client: Client):
 
         match option:
             case '1':
-                print(f'Your income is {client.income}')
+                receiver_id = int(input('Insira o id para quem você deseja transferir: '))
+                value = float(input('Insira o valor a ser tranferido: '))
+                for other_client in clients:
+                    if other_client.id == receiver_id:
+                        client.income -= value
+                        other_client.income += value
+                        print(f'{value} foi transferido para {other_client.name}')
+                    elif other_client.id != receiver_id:
+                        print('erro')
+
             case '2':
                 value = float(input('Enter the value to deposit: '))
                 client.income += value
@@ -47,6 +61,7 @@ def account(client: Client):
             case '4':
                 print('SALDO'.center(30, '-'))
                 print(f'Seu saldo atual é {client.income}')
+                print('SALDO'.center(30, '-'))
             case '0':
                 print('Exiting for main view...')
                 break
@@ -56,13 +71,10 @@ def account(client: Client):
     
 
 def main():
-    tester1 = Client(432, 'tester', '13/04/1976', 332415144, 'Praça alves, 13 - Margarida - São Paulo/SP', 1000.0, 'test')
-    tester2 =  Client(332, 'tester2', '20/07/1988', 666673352, 'Praça pedrão, 2 - Pedras Novas - Rio de Janeiro/RJ', 2000.0, 'test2')
-    clients = [tester1, tester2]
     
     while True:
         menu_principal = '''
-Choose one of this options:
+\033[33mChoose one of this options:
 [1] Login
 [2] Create Account
 [0] Exit for application
