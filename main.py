@@ -1,5 +1,4 @@
-# Version 1.3.0
-# TODO: Conta corrente, visualizar extrato, modularizar as operações.
+# Version 1.4.0
  
 import random
 from datetime import datetime
@@ -53,16 +52,19 @@ def account(client: Client):
                     if other_client.id == receiver_id:
                         client.income -= value
                         other_client.income += value
-                        client.transactions.append(Transaction('Tranfer', value, datetime.now()))
+                        client.transactions.append(Transaction(f'Transferência de {value} reais para {other_client.name} em {datetime.now()}', value, datetime.now()))
                         print(f'{value} foi transferido para {other_client.name}')
                     elif other_client.id != receiver_id:
                         print('')
 
         def deposit(value: float, /):
             client.income += value
-            client.transactions.append(Transaction('Deposit', value, datetime.now()))
+            client.transactions.append(Transaction(f'Depósito de {value} em {datetime.now()}', value, datetime.now()))
             print(f'Seu saldo atual é {client.income}')
-            
+
+        def extract():
+            for transaction in client.transactions:
+                    print(transaction.name)
 
         match option:
             case '1':
@@ -83,8 +85,7 @@ def account(client: Client):
                 print('SALDO'.center(30, '-'))
             case '5':
                 print('Extrato: ')
-                for transaction in client.transactions:
-                    print(transaction.name)
+                extract()
             case '0':
                 print('Exiting for main view...')
                 break
@@ -123,7 +124,7 @@ Insira um comando válido: '''
             case '2':
                 name = input('Insira o seu nome completo: ')
                 birth_date = input('Insira a sua data de nascimento: ')
-                cpf = input('Insira o seu CPF: ')
+                cpf = int(input('Insira o seu CPF: '))
                 logradouro = input('Insira o seu logradouro: ')
                 house_number = input('Insira o número da sua casa: ')
                 bairro = input('Insira o nome do seu bairro: ')
@@ -134,10 +135,20 @@ Insira um comando válido: '''
                 address = f'{logradouro}, {house_number} - {bairro} - {city}/{state}'
                 id = random.randint(0, 1000)
 
-                new_client = Client(id, name, birth_date, cpf, address, 0.0, password)
-                clients.append(new_client)
-
-                print(f'Novo cliente salvo! O seu id é {id}')
+                cont = 0
+                for client in clients:
+                    if client.cpf == cpf:
+                        cont += 1
+                    elif client.cpf != cpf:
+                        print(' ')
+                    
+                if cont >= 1:
+                    print('ERRO: CPF já existe no sistema')
+                elif cont <= 0:
+                    new_client = Client(id, name, birth_date, cpf, address, 0.0, [],  password)
+                    clients.append(new_client)
+                    print(f'Novo cliente salvo! O seu id é {id}')
+                    
             case '0':
                 print('fatal: Encerrando sessão....')
                 break
