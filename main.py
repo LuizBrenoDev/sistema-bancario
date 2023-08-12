@@ -136,16 +136,15 @@ def account(account: Account):
 
 def main():
     while True:
-        menu_principal = '''
+        print('''
 \033[33mChoose one of this options:
 [1] Login
 [2] Enter a existing account
 [3] Create a client
 [4] Create Account for a existing client
 [0] Exit for application
-    
-Insira um comando válido: '''
-        option = input(menu_principal)
+    ''')
+        option = input('Insira um comando válido: ')
 
         match option:
             case '1':
@@ -212,7 +211,7 @@ Insira um comando válido: '''
                 for client in clients:
                     if client.password == password and client.id == int(id):
                         print('Exactly')
-                        new_account = Account('001', len(accounts) + 1, 0.0, client)
+                        new_account = Account('0001', len(accounts) + 1, 0.0, client)
                         print(f'Account Created!! id = {new_account.account_number}')
                         account(new_account)
                         accounts.append(new_account)
@@ -222,7 +221,7 @@ Insira um comando válido: '''
                         print('')
 
             case '0':
-                print('fatal: Encerrando sessão....')
+                print('Encerrando sessão....')
                 break
             case _:
                 print('Comando errado, por favor revise ou contate um administrador... ')
