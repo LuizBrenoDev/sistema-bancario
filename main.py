@@ -9,7 +9,7 @@ def get_age(birth_date: str):
     fields = birth_date.split('/')
     year = fields[2]
 
-    spliter = datetime.now().split(' ')
+    spliter = str(datetime.now()).split(' ')
     date = spliter[0]
     fields = date.split('-')
     actual_year = fields[0]
@@ -139,8 +139,9 @@ def main():
         menu_principal = '''
 \033[33mChoose one of this options:
 [1] Login
-[2] Create Client
-[3] Create Account for a existing client
+[2] Enter a existing account
+[3] Create a client
+[4] Create Account for a existing client
 [0] Exit for application
     
 Insira um comando válido: '''
@@ -161,6 +162,21 @@ Insira um comando válido: '''
                         print('')
 
             case '2':
+                id = input('Insira o seu id de usuário: ')
+                password = input('Insira a sua senha: ')
+                acc_num = input('Insira o número da conta: ')
+
+                for acc in accounts:
+                    if acc.client.id == int(id) and acc.client.password == password and acc.account_number == int(acc_num):
+                        account(acc)
+                    elif acc.client.id != int(id):
+                        print('ERROR: Id do usuário incorreto')
+                    elif acc.client.password != password:
+                        print('ERROR: A senha está incorreta')
+                    elif acc.account_number != int(acc_num):
+                        print('ERROR: O número da conta está incorreto')
+
+            case '3':
                 name = input('Insira o seu nome completo: ')
                 birth_date = input('Insira a sua data de nascimento: ')
                 cpf = int(input('Insira o seu CPF: '))
@@ -189,16 +205,17 @@ Insira um comando válido: '''
                     new_client = Client(id, name, birth_date, cpf, address, [], password)
                     clients.append(new_client)
                     print(f'Novo cliente salvo! O seu id é {id}')
-            case '3':
+            case '4':
                 id = input('Insert your client id: ')
                 password = input('Insert your client password: ')
 
                 for client in clients:
                     if client.password == password and client.id == int(id):
                         print('Exactly')
-                        new_account = Account('001', len(accounts), 0.0, client)
+                        new_account = Account('001', len(accounts) + 1, 0.0, client)
                         print(f'Account Created!! id = {new_account.account_number}')
                         account(new_account)
+                        accounts.append(new_account)
                     elif client.password != password:
                         print('')
                     elif client.id != int(id):
